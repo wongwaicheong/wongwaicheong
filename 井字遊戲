@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title>井字遊戲</title>
+
+    <style>
+        * {
+            font-family: Arial;
+        }
+
+        header, footer {
+            background-color: #666666;
+            color: #FFFFFF;
+            text-align: center;
+            padding: 10px;
+        }
+
+        main {
+            padding: 10px 0;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+            width: 240px;
+            margin: auto;
+        }
+
+        .grid-item {
+            display: grid;
+            width: 80px;
+            height: 80px;
+            justify-content: center;
+            align-items: center;
+            background-color: #F0F0F0;
+            cursor: pointer;
+        }
+
+        .yellow {
+            background-color: #ff0;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>井字遊戲</h1>
+</header>
+
+<main>
+    <div class="grid-container">
+        <div id="grid1" class="grid-item" onclick="makeMove(0, 0)"></div>
+        <div id="grid2" class="grid-item" onclick="makeMove(0, 1)"></div>
+        <div id="grid3" class="grid-item" onclick="makeMove(0, 2)"></div>
+        <div id="grid4" class="grid-item" onclick="makeMove(1, 0)"></div>
+        <div id="grid5" class="grid-item" onclick="makeMove(1, 1)"></div>
+        <div id="grid6" class="grid-item" onclick="makeMove(1, 2)"></div>
+        <div id="grid7" class="grid-item" onclick="makeMove(2, 0)"></div>
+        <div id="grid8" class="grid-item" onclick="makeMove(2, 1)"></div>
+        <div id="grid9" class="grid-item" onclick="makeMove(2, 2)"></div>
+    </div>
+</main>
+
+<footer>
+    <b>井字遊戲 (2024.01.26)</b>
+</footer>
+
+<script>
+    var currentPlayer = 'X';
+    var gameBoard = [
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', '']];
+
+    function makeMove(row, col) {if (gameBoard[row][col] === '') {
+            gameBoard[row][col] = currentPlayer;
+            document.getElementById('grid' + (row * 3 + col + 1)).innerText = currentPlayer;
+       
+                   if (checkGameOver()) {resetGame(); return;}
+
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X'; }}
+
+    function checkGameOver() {
+    for (var row = 0; row < 3; row++) {
+        if (gameBoard[row][0] !== '' &&
+            gameBoard[row][0] === gameBoard[row][1] &&
+            gameBoard[row][0] === gameBoard[row][2]) {
+            setTimeout(() => alert('遊戲結束！' + gameBoard[row][0] + '獲勝！'), 10);
+            showFeedback('遊戲結束！' + gameBoard[row][0] + '獲勝！');
+            return true;
+        }
+    }
+
+    for (var col = 0; col < 3; col++) {
+        if (gameBoard[0][col] !== '' &&
+            gameBoard[0][col] === gameBoard[1][col] &&
+            gameBoard[0][col] === gameBoard[2][col]) {
+            alert('遊戲結束！' + gameBoard[0][col] + '獲勝！');
+            showFeedback('遊戲結束！' + gameBoard[0][col] + '獲勝！');
+            return true;
+        }
+    }
+
+    if (gameBoard[0][0] !== '' &&
+        gameBoard[0][0] === gameBoard[1][1] &&
+        gameBoard[0][0] === gameBoard[2][2]) {
+        alert('遊戲結束！' + gameBoard[0][0] + '獲勝！');
+        showFeedback('遊戲結束！' + gameBoard[0][0] + '獲勝！');
+        return true;
+    }
+
+    if (gameBoard[2][0] !== '' &&
+        gameBoard[2][0] === gameBoard[1][1] &&
+        gameBoard[2][0] === gameBoard[0][2]) {
+        alert('遊戲結束！' + gameBoard[2][0] + '獲勝！');
+        showFeedback('遊戲結束！' + gameBoard[2][0] + '獲勝！');
+        return true;
+    }
+
+    for (var row = 0; row < 3; row++) {
+        for (var col = 0; col < 3; col++) {
+            if (gameBoard[row][col] === '') {
+                return false;
+            }
+        }
+    }
+
+    alert('遊戲結束！平局！');
+    showFeedback('遊戲結束！平局！');
+    return true;
+}
+function showFeedback(message) {
+    var feedbackDiv = document.getElementById('feedback');
+    feedbackDiv.innerText = message;
+}
+</script>
+</body>
+</html>
